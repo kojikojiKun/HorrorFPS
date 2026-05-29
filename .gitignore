@@ -1,0 +1,40 @@
+# ========================================================= 
+# Unity generated folders 
+# ========================================================= 
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+UserSettings/
+
+# Visual Studio / Rider 
+.vs/ 
+.idea/ 
+.gradle/ 
+ExportedObj/ 
+
+# Auto generated 
+*.csproj 
+*.unityproj 
+*.sln *.suo 
+*.tmp *.user 
+*.userprefs 
+*.pidb *.booproj 
+*.svd *.pdb *.mdb 
+*.opendb 
+*.VC.db 
+
+# OS files 
+.DS_Store 
+Thumbs.db 
+
+# Addressables build ServerData/
+
+# Android 
+.gradle/
+
+# Crash reports 
+sysinfo.txt

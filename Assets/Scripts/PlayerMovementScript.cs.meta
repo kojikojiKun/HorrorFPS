@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 97308ddfdff1d496cb759a41c819b13f
+AssetOrigin:
+  serializedVersion: 1
+  productId: 73776
+  packageName: Easy FPS
+  packageVersion: 1.0
+  assetPath: Assets/Easy FPS/Scripts/PlayerMovementScript.cs
+  uploadId: 157938
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 30
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
