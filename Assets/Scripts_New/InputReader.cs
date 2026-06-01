@@ -35,6 +35,7 @@ public class InputReader : MonoBehaviour
 
     public void ChangeGun(InputAction.CallbackContext context)
     {
+        //入力されたら、OnChangeGunイベントを呼び出す.
         if (context.performed)
             OnChangeGun?.Invoke();
     }
@@ -68,6 +69,7 @@ public class InputReader : MonoBehaviour
 
     public void OpenMenu(InputAction.CallbackContext context)
     {
+        //入力されたら、OnOpenMenuイベントを呼び出す.
         if (context.performed)
             OnOpenMenu?.Invoke();
     }

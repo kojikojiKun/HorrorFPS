@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CloseHatch : MonoBehaviour
 {
-    public SceneController sceneController;
+    //public SceneController sceneController;
 
    // private GameObject hatchJoint;
     private bool isPlayerEnter=false;

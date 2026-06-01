@@ -1,29 +1,23 @@
-using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(ControllerReader))]
 [RequireComponent(typeof(InputReader))]
-public class InputManager : MonoBehaviour
+public class InputManager : MonoBehaviour,IInitializeable
 {
     public static InputManager Instance;
     private ControllerReader controllerReader;
     private InputReader inputReader;
     private static Gamepad pad;
+    private bool isInitialized = false;
 
     public InputReader InputReader => inputReader;
     public static Gamepad CurrentPad => pad;
+    public bool IsInitialized => isInitialized;
 
-    private void Awake()
-    {
-        Instantiation();
-
-        controllerReader = GetComponent<ControllerReader>();
-        inputReader = GetComponent<InputReader>();
-    }
-
-    private void Instantiation()
+    public async Task InitializeAsync()
     {
         if (Instance != null && Instance != this)
         {
@@ -34,11 +28,20 @@ public class InputManager : MonoBehaviour
         //インスタンス化し、シーンをまたいでも破壊しない.
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
+        
+        controllerReader = GetComponent<ControllerReader>();
+        inputReader = GetComponent<InputReader>();
+
+        await Task.Delay(1000);
+
+        isInitialized = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        pad = controllerReader.CurrentGamePad();
-    }  
+        if (controllerReader != null)
+            //使用中のコントローラーを登録.
+            pad = controllerReader.CurrentGamePad();
+    }
 }

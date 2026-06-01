@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMove(Vector2 direction)
     {
+        Debug.Log(direction);
         //ˆÚ“®ˆ—‚ğ‚±‚±‚ÉÀ‘•.
     }
 
