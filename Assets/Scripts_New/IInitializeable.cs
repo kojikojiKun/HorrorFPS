@@ -3,4 +3,5 @@ public interface IInitializeable
 {
     bool IsInitialized { get; }
     Task InitializeAsync();
+    void Instantiate();
 }

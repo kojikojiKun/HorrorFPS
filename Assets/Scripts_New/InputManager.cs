@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(InputReader))]
 public class InputManager : MonoBehaviour,IInitializeable
 {
-    public static InputManager Instance;
+    public static InputManager Instance { get; private set; }
     private ControllerReader controllerReader;
     private InputReader inputReader;
     private static Gamepad pad;
@@ -17,22 +17,25 @@ public class InputManager : MonoBehaviour,IInitializeable
     public static Gamepad CurrentPad => pad;
     public bool IsInitialized => isInitialized;
 
-    public async Task InitializeAsync()
+    public async Task InitializeAsync() { await Task.Delay(0); }
+
+    public void Instantiate()
     {
+        if (isInitialized)
+            return;
+
         if (Instance != null && Instance != this)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
             return;
         }
 
         //インスタンス化し、シーンをまたいでも破壊しない.
         Instance = this;
-        DontDestroyOnLoad(this.gameObject);
-        
+        DontDestroyOnLoad(gameObject);
+
         controllerReader = GetComponent<ControllerReader>();
         inputReader = GetComponent<InputReader>();
-
-        await Task.Delay(1000);
 
         isInitialized = true;
     }

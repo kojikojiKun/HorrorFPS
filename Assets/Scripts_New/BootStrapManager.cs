@@ -4,7 +4,7 @@ public class BootStrapManager : MonoBehaviour
 {
     [SerializeField] private MonoBehaviour[] initializers;
 
-    private async void Start()
+    private void Awake()
     {
         foreach (var obj in initializers)
         {
@@ -15,8 +15,8 @@ public class BootStrapManager : MonoBehaviour
             if (obj is not IInitializeable initializeable)
                 continue;
 
-            //初期化が必要なオブジェクトが初期化できるまで待機.
-            await initializeable.InitializeAsync();
+            //初期化が必要なオブジェクトを初期化.
+            initializeable.Instantiate();
         }
 
         SceneManager.LoadScene("Title");

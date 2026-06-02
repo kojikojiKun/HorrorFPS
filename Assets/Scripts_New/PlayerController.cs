@@ -1,11 +1,26 @@
 using UnityEngine;
 
+public class PlayerStatus
+{
+    public float MoveSpeed;
+}
+
+[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
+    private CharacterController characterController;
     private InputReader inputReader;
+    private PlayerMovement movement;
+    private PlayerStatus status;
+
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private Camera cam;
 
     private void Awake()
     {
+        if (InputManager.Instance != null)
+            inputReader = InputManager.Instance.InputReader;
+
         //InputReaderのイベントに対応するメソッドを登録.
         inputReader.OnMove += HandleMove;
         inputReader.OnLook += HandleLook;
@@ -14,6 +29,18 @@ public class PlayerController : MonoBehaviour
         inputReader.OnFire += HandleFire;
         inputReader.OnAiming += HandleAiming;
         inputReader.OnOpenMenu += HandleOpenMenu;
+
+        //ステータス代入.
+        status = new PlayerStatus
+        {
+            MoveSpeed = moveSpeed,
+        };
+
+        //コンポーネント取得.
+        characterController = GetComponent<CharacterController>();
+
+        //オブジェクト生成.
+        movement = new PlayerMovement(characterController, cam.transform, status);
     }
 
     private void OnDestroy()
@@ -28,13 +55,13 @@ public class PlayerController : MonoBehaviour
         inputReader.OnOpenMenu -= HandleOpenMenu;
     }
 
-    private void HandleMove(Vector2 direction)
+    private void HandleMove(Vector2 input)
     {
-        Debug.Log(direction);
         //移動処理をここに実装.
+        movement.Move(input);
     }
 
-    private void HandleLook(Vector2 lookDirection)
+    private void HandleLook(Vector2 lookInput)
     {
         //視点移動処理をここに実装.
     }
