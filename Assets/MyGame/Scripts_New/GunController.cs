@@ -1,17 +1,32 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class GunController : MonoBehaviour
 {
     private InputReader inputReader;
-    private int currentGunIndex;
-    private int lastGunIndex;
+    private GunMovement gunMovement;
+    private Dictionary<GunType, GameObject> gunPrefabs = new();
+    private Dictionary<GunType, GameObject> gunInstances = new();
+    private GameObject currentGun;
 
+    [SerializeField] private Camera cam;
     [SerializeField] private Transform spawnGunPos;
-    [SerializeField] private GunData[] mainGuns;
-    [SerializeField] private GunData subGun;
+    [SerializeField] private GunData[] guns;
 
     private void Awake()
     {
+        if (InputManager.Instance == null)
+        {
+            Debug.LogError("GunController inputManager.Instance is null");
+            return;
+        }
+
+        //InputManagerインスタンス取得.
+        inputReader = InputManager.Instance.InputReader;
+
+        //オブジェクト生成.
+        gunMovement = new GunMovement();
+
         //InputReaderのイベントに対応するメソッドを登録.
         inputReader.OnChangeMainGun += HandleChangeMainGun;
         inputReader.OnChangeSubGun += HandleChangeSubGun;
@@ -30,7 +45,26 @@ public class GunController : MonoBehaviour
 
     private void Start()
     {
-        //銃オブジェクト生成.
+        //銃オブジェクトを生成して非表示.
+        foreach (var obj in guns)
+        {
+            Debug.Log($"Name:{obj.name}  GunType:{obj.GunType}");
+
+            //Dictionaryにプレファブを保存.
+            gunPrefabs.Add(obj.GunType, obj.GunPrefab);
+
+            GameObject gun = Instantiate(obj.GunPrefab,
+                spawnGunPos.position,
+                Quaternion.identity,
+                this.gameObject.transform);
+            gun.SetActive(false);
+
+            //Dictionaryにインスタンスを保存.
+            gunInstances.Add(obj.GunType, gun);
+        }
+
+        gunMovement.GetGunInstancesDictionary(gunInstances);
+        gunMovement.Equip(GunType.Pistol);
     }
 
     private void HandleChangeMainGun()
@@ -56,5 +90,10 @@ public class GunController : MonoBehaviour
     private void HandleAiming(bool isPusshing)
     {
         //銃のエイム処理を実装.
+    }
+
+    private void Update()
+    {
+        
     }
 }

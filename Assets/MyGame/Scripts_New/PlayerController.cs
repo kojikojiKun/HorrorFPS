@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[System.Serializable]
 public class PlayerStatus
 {
     public float MoveSpeed;
@@ -11,39 +12,33 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     private InputReader inputReader;
     private PlayerMovement movement;
-    private PlayerStatus status;
+    
     private Vector2 inputDir;
-
-    [SerializeField] private float moveSpeed;
+    [SerializeField] private PlayerStatus status;
     [SerializeField] private Camera cam;
 
     private void Awake()
     {
         if (InputManager.Instance == null)
         {
-            Debug.LogError("inputReader Instance is Null");
+            Debug.LogError("PlayerController inputReader.Instance is Null");
             return;
         }
 
+        //InputManagerインスタンス取得.
         inputReader = InputManager.Instance.InputReader;
-
-        //InputReaderのイベントに対応するメソッドを登録.
-        inputReader.OnMove += HandleMove;
-        inputReader.OnLook += HandleLook;
-        inputReader.OnRun += HandleRun;
-        inputReader.OnOpenMenu += HandleOpenMenu;
-
-        //ステータス代入.
-        status = new PlayerStatus
-        {
-            MoveSpeed = moveSpeed,
-        };
 
         //コンポーネント取得.
         characterController = GetComponent<CharacterController>();
 
         //オブジェクト生成.
         movement = new PlayerMovement(characterController, cam.transform, status);
+
+        //InputReaderのイベントに対応するメソッドを登録.
+        inputReader.OnMove += HandleMove;
+        inputReader.OnLook += HandleLook;
+        inputReader.OnRun += HandleRun;
+        inputReader.OnOpenMenu += HandleOpenMenu;
     }
 
     private void OnDestroy()

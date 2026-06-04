@@ -7,13 +7,20 @@ public enum FireType
     ShotGun //ŽU’e.
 }
 
+public enum GunType
+{
+    Pistol,
+    Rifle,
+    ShotGun
+}
+
 [CreateAssetMenu(fileName ="Data",menuName ="ScriptableObject/Gun")]
 public class GunData : ScriptableObject
 {
     public GameObject GunPrefab;
     public Texture CrossHair;
-    public FireType Type;
-    public int Index;
+    public FireType FireType;
+    public GunType GunType;
     public int MagazineSize;
     public float FireRate;
     public int BulletDamage;
