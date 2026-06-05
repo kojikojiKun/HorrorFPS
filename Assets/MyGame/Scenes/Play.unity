@@ -1315,7 +1315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   status:
-    MoveSpeed: 0
+    MoveSpeed: 10
   cam: {fileID: 330585545}
 --- !u!114 &1743627314
 MonoBehaviour:
@@ -1332,10 +1332,10 @@ MonoBehaviour:
   cam: {fileID: 330585545}
   spawnGunPos: {fileID: 1343866344}
   gunsPivot: {fileID: 1830574836}
-  guns:
-  - {fileID: 11400000, guid: 2703f50ba1e46d1418d4e04806e21cfb, type: 2}
-  - {fileID: 11400000, guid: 5cf507c01ae50d94b821779a3ca26015, type: 2}
-  - {fileID: 11400000, guid: 10bf237a800c64c48b58b443278eac5c, type: 2}
+  gunsData:
+  - {fileID: 11400000, guid: 7e659a2d3dbc35d4eb7b4f3370b061d2, type: 2}
+  - {fileID: 11400000, guid: 7a0cbcf6e8c189f47940bcc5e190ec8e, type: 2}
+  - {fileID: 11400000, guid: 810a8d071fb87634bb8fea6550747cd7, type: 2}
 --- !u!1 &1830574835
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,13 +5,13 @@ public class GunController : MonoBehaviour
 {
     private InputReader inputReader;
     private GunMovement gunMovement;
-    private Dictionary<GunType, GameObject> gunPrefabs = new();
-    private Dictionary<GunType, GameObject> gunInstances = new();
+    private Dictionary<int, GameObject> gunsInstances = new();
+    private EquipType lastEquipedGun;
 
     [SerializeField] private Camera cam;
     [SerializeField] private Transform spawnGunPos;
     [SerializeField] private Transform gunsPivot;
-    [SerializeField] private GunData[] guns;
+    [SerializeField] private GunData[] gunsData;
 
     private void Awake()
     {
@@ -29,7 +29,7 @@ public class GunController : MonoBehaviour
 
         //InputReaderのイベントに対応するメソッドを登録.
         inputReader.OnChangeMainGun += HandleChangeMainGun;
-        inputReader.OnChangeSubGun += HandleChangeSubGun;
+        inputReader.OnEquipSidearm += HandleEquipSidearm;
         inputReader.OnFire += HandleFire;
         inputReader.OnAiming += HandleAiming;
     }
@@ -38,19 +38,21 @@ public class GunController : MonoBehaviour
     {
         //イベントの登録を解除して、メモリリークを防止.
         inputReader.OnChangeMainGun -= HandleChangeMainGun;
-        inputReader.OnChangeSubGun -= HandleChangeSubGun;
+        inputReader.OnEquipSidearm -= HandleEquipSidearm;
         inputReader.OnFire -= HandleFire;
         inputReader.OnAiming -= HandleAiming;
     }
 
     private void Start()
     {
-        foreach (var obj in guns)
+        foreach (var obj in gunsData)
         {
-            Debug.Log($"Name:{obj.name}  GunType:{obj.GunType}");
-
-            //Dictionaryにプレファブを保存.
-            gunPrefabs.Add(obj.GunType, obj.GunPrefab);
+            //データの重複をチェック.
+            if (gunsInstances.ContainsKey(obj.Index))
+            {
+                Debug.LogError($"重複キー: {obj.name}");
+                continue;
+            }
 
             //オブジェクト生成.
             GameObject gun = Instantiate(
@@ -60,28 +62,25 @@ public class GunController : MonoBehaviour
                 gunsPivot
                 );
 
-            //オブジェクト非表示.
-            gun.SetActive(false);
-
             //Dictionaryにインスタンスを保存.
-            gunInstances.Add(obj.GunType, gun);
+            gunsInstances.Add(obj.Index, gun);
         }
 
         //GunMovementスクリプトにシーン上の銃インスタンスを登録したDictionaryを渡す.
-        gunMovement.GetGunInstancesDictionary(gunInstances);
+        gunMovement.GetGunInstancesDictionary(gunsInstances);
 
         //銃を装備.
-        gunMovement.Equip(GunType.Pistol);
+        gunMovement.EquipGun();
     }
 
     private void HandleChangeMainGun()
     {
-        //メイン武器変更処理を実装.
+        //プライマリ武器装備処理を実装.
     }
 
-    private void HandleChangeSubGun()
+    private void HandleEquipSidearm()
     {
-        //サブ武器変更処理を実装.
+        //セカンダリー武器装備処理を実装.
     }
 
     private void HandleFire(bool isPusshing )
