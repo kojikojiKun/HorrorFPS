@@ -739,7 +739,6 @@ GameObject:
   - component: {fileID: 962488902}
   - component: {fileID: 962488905}
   - component: {fileID: 962488904}
-  - component: {fileID: 962488903}
   m_Layer: 6
   m_Name: eye
   m_TagString: Untagged
@@ -762,27 +761,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1743627312}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &962488903
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 962488901}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &962488904
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1315,7 +1293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   status:
-    MoveSpeed: 0
+    MoveSpeed: 10
   cam: {fileID: 330585545}
 --- !u!114 &1743627314
 MonoBehaviour:
@@ -1332,10 +1310,10 @@ MonoBehaviour:
   cam: {fileID: 330585545}
   spawnGunPos: {fileID: 1343866344}
   gunsPivot: {fileID: 1830574836}
-  guns:
-  - {fileID: 11400000, guid: 2703f50ba1e46d1418d4e04806e21cfb, type: 2}
-  - {fileID: 11400000, guid: 5cf507c01ae50d94b821779a3ca26015, type: 2}
-  - {fileID: 11400000, guid: 10bf237a800c64c48b58b443278eac5c, type: 2}
+  gunsData:
+  - {fileID: 11400000, guid: 7e659a2d3dbc35d4eb7b4f3370b061d2, type: 2}
+  - {fileID: 11400000, guid: 7a0cbcf6e8c189f47940bcc5e190ec8e, type: 2}
+  - {fileID: 11400000, guid: 810a8d071fb87634bb8fea6550747cd7, type: 2}
 --- !u!1 &1830574835
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,8 +6,8 @@ public class InputReader : MonoBehaviour
 {
     public event Action<Vector2> OnMove;
     public event Action<Vector2> OnLook;
-    public event Action OnChangeMainGun;
-    public event Action OnChangeSubGun;
+    public event Action OnChangePrimary;
+    public event Action OnEquipSecondary;
     public event Action<bool> OnRun;
     public event Action<bool> OnFire;
     public event Action<bool> OnAiming;
@@ -38,18 +38,18 @@ public class InputReader : MonoBehaviour
         }
     }
 
-    public void ChangeMainWeapon(InputAction.CallbackContext context)
+    public void ChangePrimary(InputAction.CallbackContext context)
     {
         //入力されたら、OnChangeGunイベントを呼び出す.
         if (context.performed)
-            OnChangeMainGun?.Invoke();
+            OnChangePrimary?.Invoke();
     }
 
-    public void ChangeSubWeapon(InputAction.CallbackContext context)
+    public void EquipSecondary(InputAction.CallbackContext context)
     {
         //入力されたら、OnChangeGunイベントを呼び出す.
         if (context.performed)
-            OnChangeSubGun?.Invoke();
+            OnEquipSecondary?.Invoke();
     }
 
     public void Run(InputAction.CallbackContext context)
