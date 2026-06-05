@@ -7,10 +7,10 @@ public class GunController : MonoBehaviour
     private GunMovement gunMovement;
     private Dictionary<GunType, GameObject> gunPrefabs = new();
     private Dictionary<GunType, GameObject> gunInstances = new();
-    private GameObject currentGun;
 
     [SerializeField] private Camera cam;
     [SerializeField] private Transform spawnGunPos;
+    [SerializeField] private Transform gunsPivot;
     [SerializeField] private GunData[] guns;
 
     private void Awake()
@@ -25,7 +25,7 @@ public class GunController : MonoBehaviour
         inputReader = InputManager.Instance.InputReader;
 
         //オブジェクト生成.
-        gunMovement = new GunMovement();
+        gunMovement = new GunMovement(cam, gunsPivot);
 
         //InputReaderのイベントに対応するメソッドを登録.
         inputReader.OnChangeMainGun += HandleChangeMainGun;
@@ -45,7 +45,6 @@ public class GunController : MonoBehaviour
 
     private void Start()
     {
-        //銃オブジェクトを生成して非表示.
         foreach (var obj in guns)
         {
             Debug.Log($"Name:{obj.name}  GunType:{obj.GunType}");
@@ -53,17 +52,25 @@ public class GunController : MonoBehaviour
             //Dictionaryにプレファブを保存.
             gunPrefabs.Add(obj.GunType, obj.GunPrefab);
 
-            GameObject gun = Instantiate(obj.GunPrefab,
+            //オブジェクト生成.
+            GameObject gun = Instantiate(
+                obj.GunPrefab,
                 spawnGunPos.position,
                 Quaternion.identity,
-                this.gameObject.transform);
+                gunsPivot
+                );
+
+            //オブジェクト非表示.
             gun.SetActive(false);
 
             //Dictionaryにインスタンスを保存.
             gunInstances.Add(obj.GunType, gun);
         }
 
+        //GunMovementスクリプトにシーン上の銃インスタンスを登録したDictionaryを渡す.
         gunMovement.GetGunInstancesDictionary(gunInstances);
+
+        //銃を装備.
         gunMovement.Equip(GunType.Pistol);
     }
 
@@ -94,6 +101,6 @@ public class GunController : MonoBehaviour
 
     private void Update()
     {
-        
+        gunMovement.FollowCamera();
     }
 }

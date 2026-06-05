@@ -3,26 +3,34 @@ using System.Collections.Generic;
 
 public class GunMovement
 {
-    private GameObject gunPrefab;
     private Transform camPos;
+    private Transform gunPivot;
     private Dictionary<GunType, GameObject> instanceDict = new();
 
-    public void GetGunInstancesDictionary(Dictionary<GunType, GameObject>dict)
+    public GunMovement(Camera cam,Transform pivot)
     {
+        camPos = cam.transform;
+        gunPivot = pivot;
+    }
+
+    public void GetGunInstancesDictionary(Dictionary<GunType, GameObject> dict)
+    {
+        //シーン上の銃オブジェクトインスタンスを登録したDictionaryを受け取って代入.
         instanceDict = dict;
     }
 
-    //カメラの向きに銃を追従させる.
     public void FollowCamera()
     {
-        gunPrefab.transform.forward = camPos.forward;
+        //カメラの向きに銃を追従させる.
+        gunPivot.forward = camPos.forward;
     }
 
-    //銃を装備.
     public void Equip(GunType type)
     {
-        if(instanceDict.TryGetValue(type,out GameObject gun))
+        //指定されたGunTypeのオブジェクトを取り出す.
+        if (instanceDict.TryGetValue(type, out GameObject gun))
         {
+            //銃オブジェクトを表示.
             gun.SetActive(true);
         }
     }
