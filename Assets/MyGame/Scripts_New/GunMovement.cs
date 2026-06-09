@@ -25,13 +25,12 @@ public class GunMovement
         //カメラの向きに銃を追従させる.
         gunPivot.forward = camPos.forward;
     }
-
     public void EquipGun(int index)
     {
         //すべてのオブジェクトを非表示.
         foreach (var value in instanceDict.Values)
         {
-            value.SetActive(false);           
+            value.SetActive(false);
         }
 
         //選択された銃を表示.

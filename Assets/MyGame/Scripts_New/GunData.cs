@@ -21,6 +21,7 @@ public class GunData : ScriptableObject
     public FireType FireType;
     public EquipType EquipType;
     public int ID;
+    public int Index;
     public int MagazineSize;
     public float FireRate;
     public int BulletDamage;

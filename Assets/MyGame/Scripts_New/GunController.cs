@@ -31,6 +31,8 @@ public class GunController : MonoBehaviour
         //InputReaderのイベントに対応するメソッドを登録.
         inputReader.OnChangePrimary += HandleChangePrimary;
         inputReader.OnEquipSecondary += HandleEquipSecondary;
+        inputReader.OnChangePrimary += HandleChangePrimary;
+        inputReader.OnEquipSecondary += HandleEquipSecondary;
         inputReader.OnFire += HandleFire;
         inputReader.OnAiming += HandleAiming;
     }
@@ -38,6 +40,8 @@ public class GunController : MonoBehaviour
     private void OnDestroy()
     {
         //イベントの登録を解除して、メモリリークを防止.
+        inputReader.OnChangePrimary -= HandleChangePrimary;
+        inputReader.OnEquipSecondary -= HandleEquipSecondary;
         inputReader.OnChangePrimary -= HandleChangePrimary;
         inputReader.OnEquipSecondary -= HandleEquipSecondary;
         inputReader.OnFire -= HandleFire;
