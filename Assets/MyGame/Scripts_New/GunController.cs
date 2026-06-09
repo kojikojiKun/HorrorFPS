@@ -50,25 +50,25 @@ public class GunController : MonoBehaviour
 
     private void Start()
     {
-        foreach (var obj in gunsData)
+        for (int i = 0; i < gunsData.Length; i++)
         {
             //データの重複をチェック.
-            if (gunsInstances.ContainsKey(obj.ID))
+            if (gunsInstances.ContainsKey(i))
             {
-                Debug.LogError($"重複キー: {obj.name}");
+                Debug.LogError($"重複キー: {gunsData[i].name}");
                 continue;
             }
 
             //オブジェクト生成.
             GameObject gun = Instantiate(
-                obj.GunPrefab,
+                gunsData[i].GunPrefab,
                 spawnGunPos.position,
                 Quaternion.identity,
                 gunsPivot
                 );
 
-            //Dictionary(Key:GunData.ID,Value:GameObject)に保存.
-            gunsInstances.Add(obj.ID, gun);
+            gunsInstances.Add(i, gun);
+
         }
 
         //GunMovementスクリプトにシーン上の銃インスタンスを登録したDictionaryを渡す.
@@ -90,7 +90,7 @@ public class GunController : MonoBehaviour
         currentEquipType = EquipType.Secondary;
     }
 
-    private void HandleFire(bool isPusshing )
+    private void HandleFire(bool isPusshing)
     {
         //射撃処理を実装.
     }

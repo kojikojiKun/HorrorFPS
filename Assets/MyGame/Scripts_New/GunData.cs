@@ -20,7 +20,6 @@ public class GunData : ScriptableObject
     public Texture CrossHair;
     public FireType FireType;
     public EquipType EquipType;
-    public int ID;
     public int Index;
     public int MagazineSize;
     public float FireRate;
