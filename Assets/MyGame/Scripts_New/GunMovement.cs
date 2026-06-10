@@ -5,7 +5,7 @@ public class GunMovement
 {
     private Transform camPos;
     private Transform gunPivot;
-    private Dictionary<int, GameObject> instanceDict = new();
+    private Dictionary<GunData, GameObject> instanceDict = new();
     private EquipType currentType;
 
     public GunMovement(Camera cam, Transform pivot)
@@ -14,7 +14,7 @@ public class GunMovement
         gunPivot = pivot;
     }
 
-    public void GetGunInstancesDictionary(Dictionary<int, GameObject> dict)
+    public void GetGunInstancesDictionary(Dictionary<GunData, GameObject> dict)
     {
         //シーン上の銃オブジェクトインスタンスを登録したDictionaryを受け取って代入.
         instanceDict = dict;
@@ -25,7 +25,8 @@ public class GunMovement
         //カメラの向きに銃を追従させる.
         gunPivot.forward = camPos.forward;
     }
-    public void EquipGun(int index)
+
+    public void EquipGun(GunData data)
     {
         //すべてのオブジェクトを非表示.
         foreach (var value in instanceDict.Values)
@@ -34,7 +35,7 @@ public class GunMovement
         }
 
         //選択された銃を表示.
-        if (instanceDict.TryGetValue(index, out GameObject selectedGun))
+        if (instanceDict.TryGetValue(data, out GameObject selectedGun))
         {
             selectedGun.SetActive(true);
         }

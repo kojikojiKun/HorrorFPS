@@ -5,9 +5,11 @@ public class GunController : MonoBehaviour
 {
     private InputReader inputReader;
     private GunMovement gunMovement;
-    private Dictionary<int, GameObject> gunsInstances = new();
-    private EquipType currentEquipType;
-    private GameObject[] guns;
+    private Dictionary<GunData, GameObject> gunsInstances = new();
+    private int primariesIndex = 0;
+    private GunData[] primariesData = new GunData[2];
+    private GunData secondaryData;
+    private GunData currentEquipGunData;
 
     [SerializeField] private Camera cam;
     [SerializeField] private Transform spawnGunPos;
@@ -50,44 +52,95 @@ public class GunController : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < gunsData.Length; i++)
+        int index = 0;
+
+        foreach (var data in gunsData)
         {
             //データの重複をチェック.
-            if (gunsInstances.ContainsKey(i))
+            if (gunsInstances.ContainsKey(data))
             {
-                Debug.LogError($"重複キー: {gunsData[i].name}");
+                Debug.LogError($"重複キー: {data.name}");
                 continue;
             }
 
             //オブジェクト生成.
             GameObject gun = Instantiate(
-                gunsData[i].GunPrefab,
+                data.GunPrefab,
                 spawnGunPos.position,
                 Quaternion.identity,
                 gunsPivot
                 );
 
-            gunsInstances.Add(i, gun);
+            //Dictionary(Key:GunsData,Value:GameObject)に追加.
+            gunsInstances.Add(data, gun);
 
+
+            if (data.EquipType == EquipType.Secondary)
+            {
+                secondaryData = data;
+            }
+            else
+            {
+                primariesData[index] = data;
+                index++;
+            }
         }
 
         //GunMovementスクリプトにシーン上の銃インスタンスを登録したDictionaryを渡す.
         gunMovement.GetGunInstancesDictionary(gunsInstances);
 
-        //銃を装備.
-        gunMovement.EquipGun(0);
+        //セカンダリー武器を装備.
+        if (secondaryData != null)
+            gunMovement.EquipGun(secondaryData);
+
+        //装備中の銃のデータを登録.
+        currentEquipGunData = secondaryData;
     }
 
+    //プライマリ武器装備処理を実装.
     private void HandleChangePrimary()
     {
-        //プライマリ武器装備処理を実装.
-        currentEquipType = EquipType.Primary;
+        GunData data = new GunData();
+
+        //セカンダリー武器を装備中のとき.
+        if (currentEquipGunData.EquipType == EquipType.Secondary)
+        {
+            //最後に装備していたプライマリー武器のデータを登録.
+            data = primariesData[primariesIndex];
+        }
+
+         primariesIndex++;
+            if (primariesIndex >= primariesData.Length)
+                primariesIndex = 0;
+
+        //武器を装備.
+        gunMovement.EquipGun(data);
+
+        //装備中の銃データを登録.
+        currentEquipGunData = data;
     }
 
+    //セカンダリー武器装備処理を実装.
     private void HandleEquipSecondary()
     {
-        //セカンダリー武器装備処理を実装.
-        currentEquipType = EquipType.Secondary;
+        GunData data = new GunData();
+
+        //すでにセカンダリー武器を装備中のとき.
+        if (currentEquipGunData.EquipType == EquipType.Secondary)
+        {
+            //最後に装備していたプライマリー武器のデータを登録.
+            data = primariesData[primariesIndex];
+        }
+        else
+        {
+            data = secondaryData;
+        }
+
+        //武器を装備.
+        gunMovement.EquipGun(data);
+
+        //装備中の銃データを登録.
+        currentEquipGunData = data;
     }
 
     private void HandleFire(bool isPusshing)
