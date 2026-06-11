@@ -7,7 +7,7 @@ public class GunController : MonoBehaviour
     private GunMovement gunMovement;
     private Dictionary<GunData, GameObject> gunsInstances = new();
     private int primariesIndex = 0;
-    private GunData[] primariesData = new GunData[2];
+    private GunData[] primariesData=new GunData[2];
     private GunData secondaryData;
     private GunData currentEquipGunData;
 
@@ -105,12 +105,12 @@ public class GunController : MonoBehaviour
             return;
         }
 
-        //GunMovementスクリプトにシーン上の銃インスタンスを登録したDictionaryを渡す.
-        gunMovement.GetGunInstancesDictionary(gunsInstances);
+        //GunMovementスクリプトに必要な要素を渡す.
+        gunMovement.GetGunsData(gunsInstances, primariesData,secondaryData);
 
         //セカンダリー武器を装備.
         if (secondaryData != null)
-            gunMovement.EquipGun(secondaryData);
+           // gunMovement.EquipGun(secondaryData);
 
         //装備中の銃のデータを登録.
         currentEquipGunData = secondaryData;
@@ -132,7 +132,7 @@ public class GunController : MonoBehaviour
         currentEquipGunData = primariesData[primariesIndex];
 
         //登録されている武器を装備.
-        gunMovement.EquipGun(currentEquipGunData);
+        //gunMovement.EquipGun(currentEquipGunData);
     }
 
     //セカンダリー武器装備処理を実装.
@@ -151,12 +151,16 @@ public class GunController : MonoBehaviour
         }
 
         //登録されている武器を装備.
-        gunMovement.EquipGun(currentEquipGunData);
+       // gunMovement.EquipGun(currentEquipGunData);
     }
 
     private void HandleFire(bool isPusshing)
     {
         //射撃処理を実装.
+
+        //入力がある間だけ実行.
+        if (!isPusshing)
+            return;
     }
 
     private void HandleReLoad()

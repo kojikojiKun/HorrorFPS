@@ -3,8 +3,7 @@ using UnityEngine;
 public enum FireType
 {
     Automatic, //フルオート.
-    NonAutomatic, //単発.
-    ShotGun //散弾.
+    SemiAuto, //単発.
 }
 
 public enum EquipType
@@ -16,9 +15,9 @@ public enum EquipType
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObject/Gun")]
 public class GunData : ScriptableObject
 {
-    public GameObject GunPrefab;
-    public Texture CrossHair;
-    public FireType FireType;
+    [Tooltip("銃のプレファブ")] public GameObject GunPrefab;
+    [Tooltip("クロスヘアのテクスチャ")] public Texture CrossHair;
+    [Tooltip("射撃タイプ（フルオート、セミオート）")] public FireType FireType;
     public EquipType EquipType;
     public int Index;
     public int MagazineSize;
