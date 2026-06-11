@@ -25,7 +25,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "ChangeMainWeapon",
+                    "name": "ChangePirmaryWeapon",
                     "type": "Button",
                     "id": "2de6fd5e-58ea-4a78-9f12-5269848dcc53",
                     "expectedControlType": "",
@@ -34,7 +34,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ChangeSubWeapon",
+                    "name": "EquipSecondaryWeapon",
                     "type": "Button",
                     "id": "4438f89c-90b8-427d-a42e-9aefb5a4e236",
                     "expectedControlType": "",
@@ -139,7 +139,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ChangeMainWeapon",
+                    "action": "ChangePirmaryWeapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -150,7 +150,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ChangeMainWeapon",
+                    "action": "ChangePirmaryWeapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -161,7 +161,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ChangeSubWeapon",
+                    "action": "EquipSecondaryWeapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -172,7 +172,7 @@
                     "interactions": "MultiTap",
                     "processors": "",
                     "groups": "",
-                    "action": "ChangeSubWeapon",
+                    "action": "EquipSecondaryWeapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -18,9 +18,22 @@ public class GunController : MonoBehaviour
 
     private void Awake()
     {
+        //nullチェック.
         if (InputManager.Instance == null)
         {
             Debug.LogError("GunController inputManager.Instance is null");
+            return;
+        }
+
+        //nullチェック.
+        if (cam == null || spawnGunPos == null || gunsPivot == null || gunsData.Length == 0)
+        {
+            Debug.LogError(
+                $"Camara is null? {cam == null}," +
+                $"SpawnGunPos is null? {spawnGunPos == null}," +
+                $"GunsPivot is null? {gunsPivot == null}," +
+                $"gunsData is null? {gunsData.Length == 0}"
+                );
             return;
         }
 
@@ -33,8 +46,6 @@ public class GunController : MonoBehaviour
         //InputReaderのイベントに対応するメソッドを登録.
         inputReader.OnChangePrimary += HandleChangePrimary;
         inputReader.OnEquipSecondary += HandleEquipSecondary;
-        inputReader.OnChangePrimary += HandleChangePrimary;
-        inputReader.OnEquipSecondary += HandleEquipSecondary;
         inputReader.OnFire += HandleFire;
         inputReader.OnAiming += HandleAiming;
     }
@@ -42,8 +53,6 @@ public class GunController : MonoBehaviour
     private void OnDestroy()
     {
         //イベントの登録を解除して、メモリリークを防止.
-        inputReader.OnChangePrimary -= HandleChangePrimary;
-        inputReader.OnEquipSecondary -= HandleEquipSecondary;
         inputReader.OnChangePrimary -= HandleChangePrimary;
         inputReader.OnEquipSecondary -= HandleEquipSecondary;
         inputReader.OnFire -= HandleFire;
@@ -74,7 +83,7 @@ public class GunController : MonoBehaviour
             //Dictionary(Key:GunsData,Value:GameObject)に追加.
             gunsInstances.Add(data, gun);
 
-
+            //武器をプライマリー武器とセカンダリー武器に分類.
             if (data.EquipType == EquipType.Secondary)
             {
                 secondaryData = data;
@@ -84,6 +93,16 @@ public class GunController : MonoBehaviour
                 primariesData[index] = data;
                 index++;
             }
+        }
+
+        //nullチェック.
+        if (primariesData.Length == 0 || secondaryData == null)
+        {
+            Debug.LogError(
+                $"PrimariesData_Length:{primariesData.Length}," +
+                $"SecondaryData is null?:{secondaryData == null}"
+                );
+            return;
         }
 
         //GunMovementスクリプトにシーン上の銃インスタンスを登録したDictionaryを渡す.
@@ -100,47 +119,39 @@ public class GunController : MonoBehaviour
     //プライマリ武器装備処理を実装.
     private void HandleChangePrimary()
     {
-        GunData data = new GunData();
-
-        //セカンダリー武器を装備中のとき.
-        if (currentEquipGunData.EquipType == EquipType.Secondary)
+        //プライマリー武器を装備中のとき.
+        if (currentEquipGunData.EquipType == EquipType.Primary)
         {
-            //最後に装備していたプライマリー武器のデータを登録.
-            data = primariesData[primariesIndex];
-        }
-
-         primariesIndex++;
+            //プライマリー武器を循環選択.
+            primariesIndex++;
             if (primariesIndex >= primariesData.Length)
                 primariesIndex = 0;
+        }
 
-        //武器を装備.
-        gunMovement.EquipGun(data);
+        //プライマリー武器のデータを登録.
+        currentEquipGunData = primariesData[primariesIndex];
 
-        //装備中の銃データを登録.
-        currentEquipGunData = data;
+        //登録されている武器を装備.
+        gunMovement.EquipGun(currentEquipGunData);
     }
 
     //セカンダリー武器装備処理を実装.
     private void HandleEquipSecondary()
     {
-        GunData data = new GunData();
-
         //すでにセカンダリー武器を装備中のとき.
         if (currentEquipGunData.EquipType == EquipType.Secondary)
         {
             //最後に装備していたプライマリー武器のデータを登録.
-            data = primariesData[primariesIndex];
+            currentEquipGunData = primariesData[primariesIndex];
         }
         else
         {
-            data = secondaryData;
+            //セカンダリー武器のデータを登録.
+            currentEquipGunData = secondaryData;
         }
 
-        //武器を装備.
-        gunMovement.EquipGun(data);
-
-        //装備中の銃データを登録.
-        currentEquipGunData = data;
+        //登録されている武器を装備.
+        gunMovement.EquipGun(currentEquipGunData);
     }
 
     private void HandleFire(bool isPusshing)

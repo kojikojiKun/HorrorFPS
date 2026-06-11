@@ -207,6 +207,42 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 8bbc7d32-3313-49c3-9289-9d23c5139df0
     m_ActionName: 'Game/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 41ebc428-f54e-48ff-86fb-50866f080189
+    m_ActionName: 'Game/Look[/Mouse/delta]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 90096714}
+        m_TargetAssemblyTypeName: InputReader, Assembly-CSharp
+        m_MethodName: ChangePrimary
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2de6fd5e-58ea-4a78-9f12-5269848dcc53
+    m_ActionName: 'Game/ChangeMainWeapon[/Keyboard/1]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 90096714}
+        m_TargetAssemblyTypeName: InputReader, Assembly-CSharp
+        m_MethodName: EquipSecondary
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 4438f89c-90b8-427d-a42e-9aefb5a4e236
+    m_ActionName: 'Game/ChangeSubWeapon[/Keyboard/2]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: 
