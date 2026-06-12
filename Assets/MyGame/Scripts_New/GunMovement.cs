@@ -10,7 +10,8 @@ public class GunMovement
     private GunData[] primariesData;
     private GunData secondaryData;
     private int primariesIndex;
-    private GunData lastEquipGunData;
+    private GunData selectedGunData;
+    private GunData currentGunData;
 
     public GunMovement(Camera cam, Transform pivot)
     {
@@ -36,52 +37,79 @@ public class GunMovement
 
     public void ChangeGun(EquipType type)
     {
+        if (currentGunData == null)
+        {
+            Debug.LogError("currentGunData is null");
+            return;
+        }
+
+        //要求された銃タイプで分岐.
         switch (type)
         {
             case EquipType.Primary:
-                //最後にプライマリー武器を装備していたとき.
-                if (lastEquipGunData.EquipType == EquipType.Primary)
-                {
-                    //プライマリー武器を循環選択.
-                    primariesIndex++;
-                    if (primariesIndex >= primariesData.Length)
-                        primariesIndex = 0;
 
-                    EquipGun(primariesData[primariesIndex]);
-                }
-                break;
-            case EquipType.Secondary:
-                switch (lastEquipGunData.EquipType)
+                //現在装備中の銃タイプで分岐.
+                switch (currentGunData.EquipType)
                 {
-                    //最後にプライマリー武器を装備していたとき.
                     case EquipType.Primary:
-                        EquipGun(lastEquipGunData);
+                        //プライマリー武器を循環選択.
+                        primariesIndex++;
+                        if (primariesIndex >= primariesData.Length)
+                            primariesIndex = 0;
                         break;
-                    //最後にセカンダリー武器を装備していたとき.
                     case EquipType.Secondary:
                         break;
                 }
+
+                selectedGunData = primariesData[primariesIndex];
                 break;
+
+            case EquipType.Secondary:
+
+                //現在装備中の銃タイプで分岐.
+                switch (currentGunData.EquipType)
+                {
+                    //最後にプライマリー武器を装備していたとき.
+                    case EquipType.Primary:
+                        selectedGunData = secondaryData;
+                        break;
+                    //最後にセカンダリー武器を装備していたとき.
+                    case EquipType.Secondary:
+                        selectedGunData = primariesData[primariesIndex];
+                        break;
+                }
+                break;
+
             default:
                 Debug.LogError("EquipType Error");
                 break;
         }
+
+        //銃を装備.
+        EquipGun(selectedGunData);
     }
 
-    private void EquipGun(GunData data)
+    public void EquipGun(GunData data)
     {
+        if (data == null)
+        {
+            Debug.LogError("data is null");
+            return;
+        }
+
         //すべてのオブジェクトを非表示.
         foreach (var value in instanceDict.Values)
         {
             value.SetActive(false);
         }
 
-        /*DictionaryからKey:GunDataに対応したGameObjectを取り出す.
+        //DictionaryからKey:GunDataに対応したGameObjectを取り出す.
         if (instanceDict.TryGetValue(data, out GameObject selectedGun))
         {
             //選択された銃を表示.
             selectedGun.SetActive(true);
-        }*/
+            currentGunData = data;
+        }
     }
 
     public void FollowCamera()

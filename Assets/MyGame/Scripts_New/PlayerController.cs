@@ -9,14 +9,14 @@ public class PlayerStatus
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
-    private CharacterController characterController;
-    private InputReader inputReader;
-    private PlayerMovement movement;
-    
-    private Vector2 inputDir;
     [SerializeField] private PlayerStatus status;
     [SerializeField] private Camera cam;
 
+    private CharacterController characterController;
+    private InputReader inputReader;
+    private PlayerMovement movement;    
+    private Vector2 inputDir;
+    
     private void Awake()
     {
         if (InputManager.Instance == null)

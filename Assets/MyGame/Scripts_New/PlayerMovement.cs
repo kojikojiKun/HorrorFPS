@@ -7,7 +7,7 @@ public class PlayerMovement
     private PlayerStatus status;
     private const float GRAVITY = -9.8f;
     private float velocity = 0f;
-    [SerializeField] private float moveSpeed;
+    private float moveSpeed;
 
     public PlayerMovement(CharacterController cc,Transform camPos,PlayerStatus ps)
     {

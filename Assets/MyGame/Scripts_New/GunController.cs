@@ -3,18 +3,16 @@ using System.Collections.Generic;
 
 public class GunController : MonoBehaviour
 {
-    private InputReader inputReader;
-    private GunMovement gunMovement;
-    private Dictionary<GunData, GameObject> gunsInstances = new();
-    private int primariesIndex = 0;
-    private GunData[] primariesData=new GunData[2];
-    private GunData secondaryData;
-    private GunData currentEquipGunData;
-
     [SerializeField] private Camera cam;
     [SerializeField] private Transform spawnGunPos;
     [SerializeField] private Transform gunsPivot;
     [SerializeField] private GunData[] gunsData;
+
+    private InputReader inputReader;
+    private GunMovement gunMovement;
+    private Dictionary<GunData, GameObject> gunsInstances = new();
+    private GunData[] primariesData = new GunData[2];
+    private GunData secondaryData;
 
     private void Awake()
     {
@@ -106,52 +104,24 @@ public class GunController : MonoBehaviour
         }
 
         //GunMovementスクリプトに必要な要素を渡す.
-        gunMovement.GetGunsData(gunsInstances, primariesData,secondaryData);
+        gunMovement.GetGunsData(gunsInstances, primariesData, secondaryData);
 
         //セカンダリー武器を装備.
         if (secondaryData != null)
-           // gunMovement.EquipGun(secondaryData);
-
-        //装備中の銃のデータを登録.
-        currentEquipGunData = secondaryData;
+            gunMovement.EquipGun(secondaryData);
+            
     }
 
-    //プライマリ武器装備処理を実装.
     private void HandleChangePrimary()
     {
-        //プライマリー武器を装備中のとき.
-        if (currentEquipGunData.EquipType == EquipType.Primary)
-        {
-            //プライマリー武器を循環選択.
-            primariesIndex++;
-            if (primariesIndex >= primariesData.Length)
-                primariesIndex = 0;
-        }
-
-        //プライマリー武器のデータを登録.
-        currentEquipGunData = primariesData[primariesIndex];
-
-        //登録されている武器を装備.
-        //gunMovement.EquipGun(currentEquipGunData);
+        //プライマリー武器への変更を要求.
+        gunMovement.ChangeGun(EquipType.Primary);
     }
 
-    //セカンダリー武器装備処理を実装.
     private void HandleEquipSecondary()
     {
-        //すでにセカンダリー武器を装備中のとき.
-        if (currentEquipGunData.EquipType == EquipType.Secondary)
-        {
-            //最後に装備していたプライマリー武器のデータを登録.
-            currentEquipGunData = primariesData[primariesIndex];
-        }
-        else
-        {
-            //セカンダリー武器のデータを登録.
-            currentEquipGunData = secondaryData;
-        }
-
-        //登録されている武器を装備.
-       // gunMovement.EquipGun(currentEquipGunData);
+        //セカンダリー武器への変更を要求.
+        gunMovement.ChangeGun(EquipType.Secondary);
     }
 
     private void HandleFire(bool isPusshing)
