@@ -9,37 +9,31 @@ public class GunController : MonoBehaviour
     [SerializeField] private GunData[] gunsData;
 
     private InputReader inputReader;
-    private GunMovement gunMovement;
-    private Dictionary<GunData, GameObject> gunsInstances = new();
-    private GunData[] primariesData = new GunData[2];
-    private GunData secondaryData;
+    private GunInventory inventory;
+    private GunMovement movement;
+    private GunShooter shooter;
 
     private void Awake()
     {
         //nullチェック.
         if (InputManager.Instance == null)
-        {
             Debug.LogError("GunController inputManager.Instance is null");
-            return;
-        }
-
-        //nullチェック.
-        if (cam == null || spawnGunPos == null || gunsPivot == null || gunsData.Length == 0)
-        {
-            Debug.LogError(
-                $"Camara is null? {cam == null}," +
-                $"SpawnGunPos is null? {spawnGunPos == null}," +
-                $"GunsPivot is null? {gunsPivot == null}," +
-                $"gunsData is null? {gunsData.Length == 0}"
-                );
-            return;
-        }
+        if (cam == null)
+            Debug.LogError("Cam is null");
+        if (spawnGunPos == null)
+            Debug.LogError("SpawnGunPos is null");
+        if (gunsPivot == null)
+            Debug.LogError("GunsPivot is null");
+        if (gunsData.Length == 0 || gunsData == null)
+            Debug.LogError("GunsData is null");
 
         //InputManagerインスタンス取得.
         inputReader = InputManager.Instance.InputReader;
 
         //オブジェクト生成.
-        gunMovement = new GunMovement(cam, gunsPivot);
+        inventory = new GunInventory();
+        movement = new GunMovement(cam, gunsPivot);
+        shooter = new GunShooter();
 
         //InputReaderのイベントに対応するメソッドを登録.
         inputReader.OnChangePrimary += HandleChangePrimary;
@@ -59,69 +53,28 @@ public class GunController : MonoBehaviour
 
     private void Start()
     {
-        int index = 0;
-
-        foreach (var data in gunsData)
-        {
-            //データの重複をチェック.
-            if (gunsInstances.ContainsKey(data))
-            {
-                Debug.LogError($"重複キー: {data.name}");
-                continue;
-            }
-
-            //オブジェクト生成.
-            GameObject gun = Instantiate(
-                data.GunPrefab,
-                spawnGunPos.position,
-                Quaternion.identity,
-                gunsPivot
-                );
-
-            //Dictionary(Key:GunsData,Value:GameObject)に追加.
-            gunsInstances.Add(data, gun);
-
-            //武器をプライマリー武器とセカンダリー武器に分類.
-            if (data.EquipType == EquipType.Secondary)
-            {
-                secondaryData = data;
-            }
-            else
-            {
-                primariesData[index] = data;
-                index++;
-            }
-        }
-
-        //nullチェック.
-        if (primariesData.Length == 0 || secondaryData == null)
-        {
-            Debug.LogError(
-                $"PrimariesData_Length:{primariesData.Length}," +
-                $"SecondaryData is null?:{secondaryData == null}"
-                );
-            return;
-        }
-
-        //GunMovementスクリプトに必要な要素を渡す.
-        gunMovement.GetGunsData(gunsInstances, primariesData, secondaryData);
-
-        //セカンダリー武器を装備.
-        if (secondaryData != null)
-            gunMovement.EquipGun(secondaryData);
-            
+        inventory.InstantiateGuns(gunsData,spawnGunPos,gunsPivot);
     }
 
     private void HandleChangePrimary()
     {
         //プライマリー武器への変更を要求.
-        gunMovement.ChangeGun(EquipType.Primary);
+        ReqestChangeGun(EquipType.Primary);
     }
 
     private void HandleEquipSecondary()
     {
         //セカンダリー武器への変更を要求.
-        gunMovement.ChangeGun(EquipType.Secondary);
+        ReqestChangeGun(EquipType.Secondary);
+    }
+
+    private void ReqestChangeGun(EquipType type)
+    {
+        //装備中の銃を切り替え.
+        inventory.ChangeGun(type);
+
+        //装備した銃のデータをGunShooterクラスに渡す.
+        shooter.SetCurrentEquipGunData(inventory.CurrentGunData);
     }
 
     private void HandleFire(bool isPusshing)
@@ -145,6 +98,6 @@ public class GunController : MonoBehaviour
 
     private void Update()
     {
-        gunMovement.FollowCamera();
+        movement.FollowCamera();
     }
 }
