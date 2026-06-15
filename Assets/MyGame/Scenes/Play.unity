@@ -1313,7 +1313,7 @@ MonoBehaviour:
   gunsData:
   - {fileID: 11400000, guid: 7e659a2d3dbc35d4eb7b4f3370b061d2, type: 2}
   - {fileID: 11400000, guid: 7a0cbcf6e8c189f47940bcc5e190ec8e, type: 2}
-  - {fileID: 11400000, guid: 810a8d071fb87634bb8fea6550747cd7, type: 2}
+  - {fileID: 11400000, guid: 6270780b6ae3d504c8bb0e95c02aad1c, type: 2}
 --- !u!1 &1830574835
 GameObject:
   m_ObjectHideFlags: 0

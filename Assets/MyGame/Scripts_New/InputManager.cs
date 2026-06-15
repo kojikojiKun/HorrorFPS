@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(ControllerReader))]
 [RequireComponent(typeof(InputReader))]
-public class InputManager : MonoBehaviour,IInitializeable
+public class InputManager : MonoBehaviour, IDontDestroy
 {
     public static InputManager Instance { get; private set; }
     private ControllerReader controllerReader;

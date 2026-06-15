@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour, IInitializeable
+public class GameManager : MonoBehaviour, IDontDestroy
 {
     private bool isInitialized = false;
 

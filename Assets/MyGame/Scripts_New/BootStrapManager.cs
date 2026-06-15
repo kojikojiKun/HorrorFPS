@@ -12,11 +12,11 @@ public class BootStrapManager : MonoBehaviour
             if (obj == null)
                 continue;
 
-            if (obj is not IInitializeable initializeable)
+            if (obj is not IDontDestroy dontDestroy)
                 continue;
 
-            //初期化が必要なオブジェクトを初期化.
-            initializeable.Instantiate();
+            //シーンをまたいで存在させるオブジェクトを初期化.
+            dontDestroy.Instantiate();
         }
 
         SceneManager.LoadScene("Title");

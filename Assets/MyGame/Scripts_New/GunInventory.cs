@@ -4,14 +4,14 @@ using UnityEngine;
 public class GunInventory
 {
     private Dictionary<GunData, GameObject> instanceDict = new();
-    private List<GunData> primariesData;
+    private List<GunData> primariesData = new();
     private int primariesIndex;
     private GunData secondaryData;
     private bool isSetData = false;
     private GunData currentGunData;
     public GunData CurrentGunData => currentGunData;
 
-    public void InstantiateGuns(GunData[] gunsData,Transform spawnGunPos,Transform gunsPivot)
+    public void InstantiateGuns(GunData[] gunsData, Transform spawnGunPos, Transform gunsPivot)
     {
         foreach (var data in gunsData)
         {
@@ -23,7 +23,7 @@ public class GunInventory
             }
 
             //オブジェクト生成.
-            GameObject gun =Object.Instantiate(
+            GameObject gun = Object.Instantiate(
                 data.GunPrefab,
                 spawnGunPos.position,
                 Quaternion.identity,

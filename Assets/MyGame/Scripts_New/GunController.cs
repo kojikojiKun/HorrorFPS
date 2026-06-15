@@ -13,6 +13,8 @@ public class GunController : MonoBehaviour
     private GunMovement movement;
     private GunShooter shooter;
 
+    private bool isPushing;
+
     private void Awake()
     {
         //nullチェック.
@@ -27,7 +29,7 @@ public class GunController : MonoBehaviour
         if (gunsData.Length == 0 || gunsData == null)
             Debug.LogError("GunsData is null");
 
-        //InputManagerインスタンス取得.
+        //オブジェクト取得.
         inputReader = InputManager.Instance.InputReader;
 
         //オブジェクト生成.
@@ -38,7 +40,7 @@ public class GunController : MonoBehaviour
         //InputReaderのイベントに対応するメソッドを登録.
         inputReader.OnChangePrimary += HandleChangePrimary;
         inputReader.OnEquipSecondary += HandleEquipSecondary;
-        inputReader.OnFire += HandleFire;
+        inputReader.OnFire += SetFireInput;
         inputReader.OnAiming += HandleAiming;
     }
 
@@ -47,7 +49,7 @@ public class GunController : MonoBehaviour
         //イベントの登録を解除して、メモリリークを防止.
         inputReader.OnChangePrimary -= HandleChangePrimary;
         inputReader.OnEquipSecondary -= HandleEquipSecondary;
-        inputReader.OnFire -= HandleFire;
+        inputReader.OnFire -= SetFireInput;
         inputReader.OnAiming -= HandleAiming;
     }
 
@@ -77,13 +79,9 @@ public class GunController : MonoBehaviour
         shooter.SetCurrentEquipGunData(inventory.CurrentGunData);
     }
 
-    private void HandleFire(bool isPusshing)
+    private void SetFireInput(bool isPushingButton)
     {
-        //射撃処理を実装.
-
-        //入力がある間だけ実行.
-        if (!isPusshing)
-            return;
+        isPushing = isPushingButton;
     }
 
     private void HandleReLoad()
@@ -99,5 +97,6 @@ public class GunController : MonoBehaviour
     private void Update()
     {
         movement.FollowCamera();
+        shooter.UpDateFire(isPushing);
     }
 }

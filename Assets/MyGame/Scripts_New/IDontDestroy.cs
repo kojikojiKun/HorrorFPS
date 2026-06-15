@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-public interface IInitializeable
+public interface IDontDestroy
 {
     bool IsInitialized { get; }
     Task InitializeAsync();
